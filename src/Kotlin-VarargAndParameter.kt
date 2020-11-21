@@ -13,6 +13,18 @@ fun main() {
 
     greetPerson("Hello", "Doyoon")
     greetPerson("Ay", "Doyoon")
+
+    val classEx = KotlinClass()
+    classEx.usrLastName
+    classEx.usrFirstName
+    classEx.middleName
+    classEx.codeName = "007"
+    classEx.codeName = "001"
+    println(classEx.codeName)   //override getter is called
+
+    classEx.returnInfo()
+
+
 }
 
 fun sayHelloGreeting(typeOfGreet: String, vararg targetsToGreet: String) {
