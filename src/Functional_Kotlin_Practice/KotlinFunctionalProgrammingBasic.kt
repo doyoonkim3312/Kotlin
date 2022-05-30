@@ -1,5 +1,11 @@
 package Functional_Kotlin_Practice
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+
 // Functional Programming.
 // Functional Programming is one of the paradigm, which fundamentally 'return a data as an expression.'
 // --> in other words, always ensure same value when function with a parameter is called.
@@ -14,7 +20,19 @@ fun main(args: Array<String>) {
     // firstClassFunctionExample()
     // lambdaAsParameter()
     // domainSpecificLanguageExample()
-    dslWithTypeAlias()
+    // dslWithTypeAlias()
+    // functionalFactorialRecursionExample()
+    // optimizedFunctionalRecursionExample()
+    // recursionExamplesPerformanceComparison()
+}
+
+// Performance Comparison. (Using Poor Man's Profiler.)
+inline fun withExecutionTime(body: () -> Unit): Unit {
+    val timeStart = System.nanoTime()
+    body()
+    val timeEnd = System.nanoTime()
+
+    println("Task Completed in ${timeEnd - timeStart}.")
 }
 
 // Example of comparison between access under mutable status and immutable status.
@@ -149,4 +167,64 @@ class PrintSound<T>: Animal<T> {
 fun dslWithTypeAlias() {
     soundOfAnimal("Bark", PrintSound())
     soundOfAnimal("Bark", ::println)
+}
+
+// Recursion in Kotlin.
+// Simple Recursion Example. (Functional Factorial)
+fun functionalFactorialRecursionExample() {
+
+    // Functional Recursion
+    fun functionalRecursion(n: Long): Long {
+        fun go(n: Long, acc: Long): Long {
+            return if (n <= 0) {
+                acc
+            } else {
+                go(n-1, n * acc)
+            }
+        }
+
+        // Initialize Accumulated value.
+        val acc = 1L    // Starting from 1.
+        return go(n, acc)
+    }
+
+    // Testing: n = 6 -> Expected Result: 720
+    println(functionalRecursion(6))
+}
+
+// Above example can be optimized using tailrec keyword. (Tail-Recursive)
+fun optimizedFunctionalRecursionExample() {
+
+    // Optimized Functional Recursion using tailrec.
+    fun optimizedFunctionalRecursion(n: Long): Long {
+        tailrec fun go(n: Long, acc: Long): Long {
+            return if (n <= 0) {
+                acc
+            } else {
+                go(n - 1, n * acc)
+            }
+        }
+
+        // Initialize Accumulated Value.
+        val acc = 1L    // Starting from 1.
+        return go(n, acc)
+    }
+
+    // Testing: n = 6 -> Expected 720
+    println(optimizedFunctionalRecursion(6))
+}
+
+// Difference in performance can be tested.
+fun recursionExamplesPerformanceComparison() {
+    // Classic Recursion
+    println("Classic Recursion")
+    withExecutionTime {
+        functionalFactorialRecursionExample()
+    }
+
+    println("Optimized Recursion")
+    withExecutionTime {
+        optimizedFunctionalRecursionExample()
+    }
+
 }
