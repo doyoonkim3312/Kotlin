@@ -15,17 +15,49 @@ fun main() {
     l1.next?.next = ListNode(3)
     l1.next?.next?.next = ListNode(4)
     l1.next?.next?.next?.next = ListNode(5)
+    l1.next?.next?.next?.next?.next = ListNode(6)
 
-    CodeAnalysis.executionTime("Initial Approach") {
-        var result = solution_initial_328(l1)
+    CodeAnalysis.executionTime("Different Apporach") {
+        var result = solution_differentApproach_328(l1)
 
-        while (result?.next != null) {
+        while (result != null) {
             print("${result.`val`} ")
             result = result.next
         }
+        println()
     }
 }
 
+fun solution_differentApproach_328(head: ListNode?): ListNode? {
+    // Use two while loop, one head & one tracking
+
+    // Handle unusual case
+    if (head?.next?.next == null) return head
+
+    var tracking: ListNode? = head
+    val resultHead = ListNode(0).also { it.next = tracking }          // Initialize resultHead with a temporary ListNode instance.
+
+    val evenHead = head.next
+
+    while (tracking?.next?.next != null) {
+        val temp = tracking.next?.next
+
+        // even to even
+        tracking.next?.next = temp?.next
+        // odd to odd
+        tracking.next = temp
+
+        tracking = temp
+    }
+
+    tracking?.next = evenHead
+
+    return resultHead.next
+
+}
+
+
+/*
 fun solution_initial_328(head: ListNode?): ListNode? {
     // Pointer that traverse given linked list.
     var pt = head       // Initialize with Head.
@@ -59,3 +91,5 @@ fun solution_initial_328(head: ListNode?): ListNode? {
     trackingOdd.next = evenHead.next
     return oddHead.next
 }
+
+ */
