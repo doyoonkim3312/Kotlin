@@ -10,12 +10,12 @@ package LeetCode_Solutions
 fun main() {
 
     val testSet = ListNode(1)
-    testSet.next = ListNode(2)
-    testSet.next?.next = ListNode(3)
-    testSet.next?.next?.next = ListNode(4)
-    testSet.next?.next?.next?.next = ListNode(5)
-    testSet.next?.next?.next?.next?.next = ListNode(6)
-    testSet.next?.next?.next?.next?.next?.next = ListNode(7)
+    testSet.next = ListNode(3)
+    testSet.next?.next = ListNode(5)
+//    testSet.next?.next?.next = ListNode(4)
+//    testSet.next?.next?.next?.next = ListNode(5)
+//    testSet.next?.next?.next?.next?.next = ListNode(6)
+//    testSet.next?.next?.next?.next?.next?.next = ListNode(7)
 
     /*
     var result = reverseLinkedList(testSet, null)
@@ -34,8 +34,9 @@ fun main() {
 }
 
 fun q92InitialSolution(head: ListNode?, left: Int, right: Int): ListNode? {
+    if (head?.next?.next == null) return reverseLinkedList(head, null)
 
-    var h = head
+    val h = head
     var tracking = head
 
     var targetTracking: ListNode
@@ -43,27 +44,39 @@ fun q92InitialSolution(head: ListNode?, left: Int, right: Int): ListNode? {
         targetTracking = it
     }
 
-    var st: ListNode? = null
     var prev: ListNode? = null
     var cnt = 1
 
     while (tracking != null) {
         //if (cnt == left - 1) st = prev
-        if (cnt == right + 1) {
-            // call reverseLinkedList
-            targetTracking.next = null
-            val reversed = reverseLinkedList(targetHead.next, null)
-            targetHead.next?.next = tracking
-
-
-            prev?.next = reversed
-            return h
-        }
+//        if (cnt == right + 1) {
+//            // call reverseLinkedList
+//            targetTracking.next = null
+//            val reversed = reverseLinkedList(targetHead.next, null)
+//            targetHead.next?.next = tracking
+//
+//
+//            prev?.next = reversed
+//            return h
+//        }
         if (cnt in left..right) {
             Log.d(msg = "Current Tracking :${tracking.`val`}")
             targetTracking.next = tracking
-
             targetTracking = targetTracking.next!!
+
+            if (cnt == right) {
+                val remainingHead = tracking.next
+                targetTracking.next = null
+
+                val reversed = reverseLinkedList(targetHead.next, null)
+                Log.d(msg="${tracking.next?.`val`}")
+                targetHead.next?.next = remainingHead
+
+                if (prev == null) return reversed
+                else prev.next = reversed
+                return h
+            }
+
         } else {
             prev = tracking
         }
