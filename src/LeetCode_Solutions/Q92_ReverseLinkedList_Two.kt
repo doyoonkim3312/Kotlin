@@ -9,9 +9,9 @@ package LeetCode_Solutions
 
 fun main() {
 
-    val testSet = ListNode(1)
-    testSet.next = ListNode(3)
-    testSet.next?.next = ListNode(5)
+    val testSet = ListNode(3)
+    testSet.next = ListNode(5)
+//    testSet.next?.next = ListNode(5)
 //    testSet.next?.next?.next = ListNode(4)
 //    testSet.next?.next?.next?.next = ListNode(5)
 //    testSet.next?.next?.next?.next?.next = ListNode(6)
@@ -25,7 +25,7 @@ fun main() {
     }
      */
 
-    var result = q92InitialSolution(testSet, 2, 3)
+    var result = reverseBetween(testSet, 1, 2)
     while (result != null) {
         print("${result.`val`} ")
         result = result.next
@@ -34,7 +34,7 @@ fun main() {
 }
 
 fun q92InitialSolution(head: ListNode?, left: Int, right: Int): ListNode? {
-    if (head?.next?.next == null) return reverseLinkedList(head, null)
+    if (head == null || left == right) return head
 
     val h = head
     var tracking = head
@@ -48,17 +48,19 @@ fun q92InitialSolution(head: ListNode?, left: Int, right: Int): ListNode? {
     var cnt = 1
 
     while (tracking != null) {
-        //if (cnt == left - 1) st = prev
-//        if (cnt == right + 1) {
-//            // call reverseLinkedList
-//            targetTracking.next = null
-//            val reversed = reverseLinkedList(targetHead.next, null)
-//            targetHead.next?.next = tracking
-//
-//
-//            prev?.next = reversed
-//            return h
-//        }
+        /*
+        if (cnt == left - 1) st = prev
+        if (cnt == right + 1) {
+            // call reverseLinkedList
+            targetTracking.next = null
+            val reversed = reverseLinkedList(targetHead.next, null)
+            targetHead.next?.next = tracking
+
+
+            prev?.next = reversed
+            return h
+        }
+         */
         if (cnt in left..right) {
             Log.d(msg = "Current Tracking :${tracking.`val`}")
             targetTracking.next = tracking
@@ -74,6 +76,7 @@ fun q92InitialSolution(head: ListNode?, left: Int, right: Int): ListNode? {
 
                 if (prev == null) return reversed
                 else prev.next = reversed
+//                if (prev != null) prev.next = reversed
                 return h
             }
 
@@ -87,6 +90,47 @@ fun q92InitialSolution(head: ListNode?, left: Int, right: Int): ListNode? {
 
     return null
 
+}
+
+// Solution Accepted.
+fun reverseBetween(head: ListNode?, left: Int, right: Int): ListNode? {
+    if (head == null || left == right) return head
+
+    val h = head
+    var tracking = h
+
+    val targetHead = ListNode(0)
+    var targetTracking = targetHead
+
+    var prev: ListNode? = null
+    var cnt = 1
+
+    while (tracking != null) {
+        if (cnt in left..right) {
+            targetTracking.next = tracking
+            targetTracking = targetTracking.next!!
+
+            if (cnt == right) {
+                val next = tracking.next
+                targetTracking.next = null
+
+                val reversed = reverseLinkedList(targetHead.next, null)
+                targetHead.next?.next = next
+
+                if (prev == null) return reversed
+                else prev.next = reversed
+
+                return h
+            }
+        } else {
+            prev = tracking
+        }
+
+        tracking = tracking.next
+        cnt++
+    }
+
+    return null
 }
 
 
