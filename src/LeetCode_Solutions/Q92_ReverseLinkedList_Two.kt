@@ -9,12 +9,12 @@ package LeetCode_Solutions
 
 fun main() {
 
-    val testSet = ListNode(3)
-    testSet.next = ListNode(5)
-//    testSet.next?.next = ListNode(5)
-//    testSet.next?.next?.next = ListNode(4)
-//    testSet.next?.next?.next?.next = ListNode(5)
-//    testSet.next?.next?.next?.next?.next = ListNode(6)
+    val testSet = ListNode(1)
+    testSet.next = ListNode(2)
+    testSet.next?.next = ListNode(3)
+    testSet.next?.next?.next = ListNode(4)
+    testSet.next?.next?.next?.next = ListNode(5)
+    testSet.next?.next?.next?.next?.next = ListNode(6)
 //    testSet.next?.next?.next?.next?.next?.next = ListNode(7)
 
     /*
@@ -25,7 +25,7 @@ fun main() {
     }
      */
 
-    var result = reverseBetween(testSet, 1, 2)
+    var result = q92SolutionEnhanced(testSet, 2, 5)
     while (result != null) {
         print("${result.`val`} ")
         result = result.next
@@ -141,4 +141,38 @@ fun reverseLinkedList(head: ListNode?, prev: ListNode?): ListNode? {
     val oldNext = head.next
     head.next = prev
     return reverseLinkedList(oldNext, head)
+}
+
+
+// Enhanced Solution
+fun q92SolutionEnhanced(head: ListNode?, left: Int, right: Int): ListNode? {
+//    val root = head                 // set root to head might cause problem in case where target range starts with 1.
+    val root = ListNode(0).also { it.next = head }
+    var start: ListNode? = root.next
+
+    for (x in 1 until left) {
+        start = start?.next
+    }
+    // Initialize variable end that would eventually point out the very end of the target range.
+    val end = start?.next
+
+
+    // Swap & Reverse (looks like crossing.)
+    // Example
+    // a -> b -> c -> d -> e -> f
+    // start = b, end = c
+    for (y in left until right) {
+        // c => temp
+        val temp = start?.next
+        // make b -> d
+        start?.next = end?.next
+        // make c -> e
+        end?.next = end?.next?.next
+        // nmake d -> c     (where start?.next would be d.)
+        start?.next?.next = temp
+
+        // at this point, the linkage would be changed like below:
+        // a -> b -> d -> c -> e -> f
+    }
+    return root.next
 }
