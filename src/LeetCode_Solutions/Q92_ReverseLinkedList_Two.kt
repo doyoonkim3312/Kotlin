@@ -150,7 +150,7 @@ fun q92SolutionEnhanced(head: ListNode?, left: Int, right: Int): ListNode? {
     val root = ListNode(0).also { it.next = head }
     var start: ListNode? = root.next
 
-    for (x in 1 until left) {
+    for (x in 0 until left - 2) {       // start has to be set to one right before 'left'
         start = start?.next
     }
     // Initialize variable end that would eventually point out the very end of the target range.
