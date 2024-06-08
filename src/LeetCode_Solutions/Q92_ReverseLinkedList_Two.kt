@@ -148,9 +148,9 @@ fun reverseLinkedList(head: ListNode?, prev: ListNode?): ListNode? {
 fun q92SolutionEnhanced(head: ListNode?, left: Int, right: Int): ListNode? {
 //    val root = head                 // set root to head might cause problem in case where target range starts with 1.
     val root = ListNode(0).also { it.next = head }
-    var start: ListNode? = root.next
+    var start: ListNode? = root
 
-    for (x in 0 until left - 2) {       // start has to be set to one right before 'left'
+    for (x in 0 until left - 1) {
         start = start?.next
     }
     // Initialize variable end that would eventually point out the very end of the target range.
