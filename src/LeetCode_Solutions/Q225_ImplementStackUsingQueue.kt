@@ -45,6 +45,8 @@ class MyStack() {
     fun top(): Int {
         val result = this.pop()
         push(result)
+
+        return result
     }
 
     fun empty(): Boolean {
