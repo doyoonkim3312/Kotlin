@@ -64,16 +64,16 @@ class Q3 {
 
             // Two Pointer
             var start = 0
-            var end = 0
+            var end = 1
 
-            while (end < s.length - 1 && start <= end) {
-                validate.clear().also { validate.addAll(s.substring(start, end + 1).toList()) }
-                if (validate.contains(s[end + 1])) start++
+            while (end < s.length && start <= end) {
+                validate.clear().also { validate.addAll(s.substring(start, end).toList()) }
+                // println("HashSet: ${validate}, ${s[end]} will be tested.")
+                if (validate.contains(s[end])) start++
                 else end++
 
                 result = Math.max(result, validate.size)
             }
-
 
             return result
         }
