@@ -27,11 +27,13 @@ class Q347 {
                 elementFrequency[it] = elementFrequency[it]!! + 1
             }
             
-            // Sort HashMap by its values: https://stackoverflow.com/questions/51021580/kotlin-sort-hashmap-in-descending-order
-            elementFrequency.toSortedMap( compareByDescending { it } )
+            // thenByDescending: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.comparisons/then-by-descending.html
+           	val sorted = elementFrequency.keys.sortedWith<Int>(
+            	compareBy<Int> { elementFrequency[it] }.thenByDescending { it }
+            ).reversed()
             
           	return IntArray(k) { 
-                elementFrequency.keys.toList()[it]
+                sorted[it]
             }
     	}
     }
