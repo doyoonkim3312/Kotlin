@@ -36,5 +36,35 @@ class Q347 {
                 sorted[it]
             }
     	}
+
+        fun enhancedSolution(nums: IntArray, k: Int): IntArray {
+            val frequencyByElement = HashMap<Int, Int>()
+            
+            nums.forEach { 
+            	if (!frequencyByElement.keys.contains(it)) frequencyByElement.put(it, 0)
+                frequencyByElement[it] = frequencyByElement[it]!! + 1
+            }
+            
+            // Declare another HashMap that stores Element By Frequency
+            val elementByFrequency = HashMap<Int, MutableList<Int>>()
+            
+            for ((k, v) in frequencyByElement) {
+                if (!elementByFrequency.keys.contains(v)) elementByFrequency.put(v, mutableListOf<Int>())
+                elementByFrequency[v]!!.add(k)
+            }
+
+            // Extract top K element
+            var cnt = 0
+            val result = mutableListOf<Int>()
+            for (key in elementByFrequency.keys.reversed()) {
+                
+                for (element in elementByFrequency[key]!!) {
+                    result.add(element).run { cnt++ }
+                    if (cnt == k) return result.toIntArray()
+                }
+            }
+            
+            return intArrayOf()
+        }
     }
 }
