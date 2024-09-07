@@ -1,5 +1,6 @@
 package LeetCode_Solutions
 
+import java.util.PriorityQueue
 /**
  * Q347: Top k Frequent Elements
  * Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
@@ -14,7 +15,8 @@ package LeetCode_Solutions
  */
 
 fun main() {
-    Q347.topKFrequent(intArrayOf(1), 1).also { it.forEach(::println) } 
+    // Q347.topKFrequent(intArrayOf(1), 1).also { it.forEach(::println) }
+    Q347.improvedApproach(intArrayOf(4,1,-1,2,-1,2,3), 2).also { it.forEach(::println) }
 }
 
 class Q347 {
@@ -65,6 +67,30 @@ class Q347 {
             }
             
             return intArrayOf()
+        }
+        
+        fun improvedApproach(nums: IntArray, k: Int): IntArray {
+            // Utilize both HashMap & PriorityQueue
+            val frequencyByElement = HashMap<Int, Int>()
+            nums.forEach { 
+            	frequencyByElement.put(it, frequencyByElement.getOrDefault(it, 0) + 1)
+            }
+            
+            val keySortedDescending = PriorityQueue<Int>() { p1, p2 ->
+                if (frequencyByElement[p1]!! > frequencyByElement[p2]!!) {
+                    -1
+                } else if (frequencyByElement[p1]!! < frequencyByElement[p2]!!) {
+                    1
+                } else {
+                    0
+                }
+            }.apply {
+                frequencyByElement.keys.forEach { this.add(it) }
+            }
+
+            return IntArray(k) {
+                keySortedDescending.poll()
+            }
         }
     }
 }
