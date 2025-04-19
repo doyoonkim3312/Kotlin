@@ -24,19 +24,3 @@ fun main() {
     }
     println(differences)
 }
-
-fun combination(arr: List<Pair<Int, Int>>, n: Int): List<List<Pair<Int, Int>>> {
-    // if n == 0, return list of emptyList (no possible combination remaining)
-    if (n == 0) return listOf(emptyList())
-    if (arr.isEmpty()) return emptyList()
-
-    val result = mutableListOf<List<Pair<Int, Int>>>()
-    for (i in arr.indices) {
-        val selection = arr[i]
-        val remaining = arr.drop(i + 1)     // .drop: return array after dropping first 'n' elements.
-        for (c in combination(remaining, n - 1)) {
-            result.add(listOf(selection) + c)       // keep stacking possible selections into a single list -> generate combinations.
-        }
-    }
-    return result
-}
